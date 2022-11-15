@@ -2,6 +2,7 @@ import tkinter as tk
 import nltk
 from textblob import TextBlob
 from newspaper import Article
+import pyttsx3  
 nltk.download('punkt')
 
 def summarize():
@@ -44,6 +45,20 @@ def summarize():
     print(f'Authors:{article.authors}')
     print(f'Publish Date:{article.publish_date}')
     print(f'Summary:{article.summary}')
+    
+def audio_summary():
+    url =utext.get('1.0', "end").strip()               
+
+    article =Article(url)
+
+    article.download()
+    article.parse()
+ 
+    article.nlp()
+    mytext=article.summary
+    engine = pyttsx3.init()
+    engine.say(mytext)
+    engine.runAndWait()
 
 root=tk.Tk()
 root.title("News Summarize")
@@ -78,5 +93,8 @@ sentiment.pack()
 
 btn =tk.Button(root,text="Summarize",command=summarize)
 btn.pack()
+btn =tk.Button(root,text="Audio",command=audio_summary)
+btn.pack()
+
 
 root.mainloop()
